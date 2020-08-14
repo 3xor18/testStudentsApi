@@ -2,7 +2,8 @@ package com.gersonAponte.app.serviceImp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,5 +75,11 @@ public class CourseServiceImpl implements CourseService {
 	public void delete(Long id) {
 		log.debug("Request to delete Course : {}", id);
 		courseRepository.deleteById(id);
+	}
+
+	//Return All Courses Page by 5
+	@Override
+	public Page<Course> findAllCoursesPage(Pageable pageable) {
+		return courseRepository.findAll(pageable);
 	}
 }
