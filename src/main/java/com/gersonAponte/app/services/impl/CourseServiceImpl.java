@@ -105,7 +105,7 @@ public class CourseServiceImpl implements CourseService {
 	 * @return cast to json to Entity Course
 	 * @throws GlobalAppException
 	 */
-	private Course getCourseEntity(Long courseId) throws GlobalAppException {
+	public Course getCourseEntity(Long courseId) throws GlobalAppException {
 		return courseRepository.findById(courseId)
 				.orElseThrow(() -> new NotFoundException(AppConstans.ERROR_404, AppConstans.COURSE_NOT_FOUND));
 	}
@@ -145,7 +145,7 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	/**
-	 *Return Page of courses
+	 * Return Page of courses
 	 */
 	@Override
 	public Page<CourseRest> findCoursePage(Pageable pageable) throws GlobalAppException {
