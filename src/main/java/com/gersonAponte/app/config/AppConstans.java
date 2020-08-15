@@ -15,6 +15,7 @@ public final class AppConstans {
 	public static final  String ERROR_404 = "404";
 	public static final  String ERROR_500 = "500";
 	public static final  String INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR";
+	public static final int PAGINADOBY=5;
 	
 	public AppConstans() {};
 	

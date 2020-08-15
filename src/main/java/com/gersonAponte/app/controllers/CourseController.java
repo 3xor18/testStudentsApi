@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gersonAponte.app.config.AppConstans;
 import com.gersonAponte.app.exceptions.CourseException;
 import com.gersonAponte.app.exceptions.GlobalAppException;
 import com.gersonAponte.app.exceptions.InternalServerErrorException;
@@ -76,7 +79,6 @@ public class CourseController {
 	 * @return all Courses in DB
 	 * @throws GlobalAppException
 	 */
-	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "courses", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getRestaurants() {
 		Map<String, Object> response = new HashMap<>();
@@ -137,20 +139,17 @@ public class CourseController {
 		String message = null;
 		try {
 			message = courseService.deleteCourse(id);
-		} 
-		catch (NotFoundException notFound) {
+		} catch (NotFoundException notFound) {
 			notFound.printStackTrace();
 			response.put("message", "NOT_FOUND_EXCEPTION");
 			response.put("error", notFound.getMessage());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-		}
-		catch (InternalServerErrorException internalError) {
+		} catch (InternalServerErrorException internalError) {
 			internalError.printStackTrace();
 			response.put("message", "INTERNAL_SERVER_ERROR");
 			response.put("error", internalError.getMessage());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			response.put("message", "INTERNAL_SERVER_ERROR");
 			response.put("error", e.getMessage());
@@ -158,13 +157,17 @@ public class CourseController {
 		}
 		return new ResponseEntity<String>(message, HttpStatus.NO_CONTENT);
 	}
-	
+
+	/**
+	 * @param courseRest
+	 * @return A Edit course
+	 */
 	@RequestMapping(value = "course", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> editCourse(@RequestBody CourseRest courseRest) {
 		Map<String, Object> response = new HashMap<>();
-		CourseRest newCourse=null;
+		CourseRest newCourse = null;
 		try {
-			newCourse= courseService.editCourse(courseRest);
+			newCourse = courseService.editCourse(courseRest);
 		} catch (CourseException courseEx) {
 			courseEx.printStackTrace();
 			response.put("message", "ERROR_IN_REQUEST");
@@ -182,6 +185,25 @@ public class CourseController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<CourseRest>(newCourse, HttpStatus.OK);
+	}
+
+	/**
+	 * @param page
+	 * @return Page of Courses
+	 */
+	@RequestMapping(value = "courses/page/{page}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getCoursePage(@PathVariable Integer page) {
+		Map<String, Object> response = new HashMap<>();
+		Pageable pageable = PageRequest.of(page, AppConstans.PAGINADOBY);
+		try {
+			Page<CourseRest> courses = courseService.findCoursePage(pageable);
+			return new ResponseEntity<Page<CourseRest>>(courses, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("Error", e.getCause());
+			response.put("message", "COURSES_NOT_FOUND");
+			response.put("error", e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
 	}
 
 }

@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gersonAponte.app.config.AppConstans;
@@ -85,9 +88,9 @@ public class CourseServiceImpl implements CourseService {
 	public CourseRest editCourse(CourseRest courseRest) throws GlobalAppException {
 		courseExistByCode(courseRest.getCode());
 		Course validCourse = validationNewCourse(courseRest);
-		Course courseEdit=null;
+		Course courseEdit = null;
 		try {
-			courseEdit=courseRepository.save(validCourse);
+			courseEdit = courseRepository.save(validCourse);
 		} catch (final Exception e) {
 			log.error(AppConstans.INTERNAL_SERVER_ERROR, e);
 			throw new InternalServerErrorException(AppConstans.ERROR_500, AppConstans.INTERNAL_SERVER_ERROR);
@@ -107,9 +110,8 @@ public class CourseServiceImpl implements CourseService {
 				.orElseThrow(() -> new NotFoundException(AppConstans.ERROR_404, AppConstans.COURSE_NOT_FOUND));
 	}
 
-
-	private boolean courseExistByCode(String codeCourse)throws GlobalAppException {
-		Course course =courseRepository.findByCode(codeCourse).orElse(null);
+	private boolean courseExistByCode(String codeCourse) throws GlobalAppException {
+		Course course = courseRepository.findByCode(codeCourse).orElse(null);
 		if (course != null) {
 			throw new CourseException(AppConstans.ERROR_400, AppConstans.COURSE_ALL_READY_EXIST_WITH_THIS_CODE);
 		}
@@ -140,6 +142,18 @@ public class CourseServiceImpl implements CourseService {
 	private Course courseExist(Long idCourse) throws GlobalAppException {
 		return courseRepository.findById(idCourse)
 				.orElseThrow(() -> new NotFoundException(AppConstans.ERROR_404, AppConstans.COURSE_NOT_FOUND));
+	}
+
+	/**
+	 *Return Page of courses
+	 */
+	@Override
+	public Page<CourseRest> findCoursePage(Pageable pageable) throws GlobalAppException {
+		final Page<Course> courses = courseRepository.findAll(pageable);
+		List<CourseRest> coursesList = courses.stream().map(service -> modelMapper.map(service, CourseRest.class))
+				.collect(Collectors.toList());
+		final Page<CourseRest> courseRes = new PageImpl<>(coursesList);
+		return courseRes;
 	}
 
 }

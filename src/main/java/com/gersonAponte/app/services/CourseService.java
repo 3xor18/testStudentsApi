@@ -2,6 +2,8 @@ package com.gersonAponte.app.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gersonAponte.app.exceptions.GlobalAppException;
@@ -43,4 +45,6 @@ public interface CourseService {
 	 * @throws GlobalAppException
 	 */
 	public CourseRest editCourse(CourseRest courseRest) throws GlobalAppException;
+	
+	Page<CourseRest> findCoursePage(Pageable pageable)throws GlobalAppException;
 }
