@@ -21,9 +21,6 @@ public class StudentsRest {
 	@JsonProperty("age")
 	private Integer age;
 
-	@JsonProperty("course")
-	private CourseRest course;
-
 	public Long getId() {
 		return id;
 	}
@@ -62,14 +59,6 @@ public class StudentsRest {
 
 	public void setAge(Integer age) {
 		this.age = age;
-	}
-
-	public CourseRest getCourse() {
-		return course;
-	}
-
-	public void setCourse(CourseRest course) {
-		this.course = course;
 	}
 
 }

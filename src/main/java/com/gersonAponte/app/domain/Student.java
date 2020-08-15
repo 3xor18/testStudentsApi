@@ -1,4 +1,5 @@
 package com.gersonAponte.app.domain;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -31,9 +32,6 @@ public class Student implements Serializable {
 	@NotNull
 	@Column(name = "age", nullable = false)
 	private Integer age;
-
-	@ManyToOne
-	private Course course;
 
 	public Long getId() {
 		return id;
@@ -93,19 +91,6 @@ public class Student implements Serializable {
 
 	public void setAge(Integer age) {
 		this.age = age;
-	}
-
-	public Course getCourse() {
-		return course;
-	}
-
-	public Student course(Course course) {
-		this.course = course;
-		return this;
-	}
-
-	public void setCourse(Course course) {
-		this.course = course;
 	}
 
 	@Override

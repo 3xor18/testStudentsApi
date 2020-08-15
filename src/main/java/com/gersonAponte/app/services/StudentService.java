@@ -48,10 +48,4 @@ public interface StudentService {
 	 */
 	public StudentsRest editStudent(StudentsRest studentRest) throws GlobalAppException;
 
-	/**
-	 * @param pageable
-	 * @return Page Of Students
-	 * @throws GlobalAppException
-	 */
-	Page<StudentsRest> findStudentPage(Pageable pageable) throws GlobalAppException;
 }

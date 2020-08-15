@@ -80,7 +80,7 @@ public class CourseController {
 	 * @throws GlobalAppException
 	 */
 	@RequestMapping(value = "courses", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getRestaurants() {
+	public ResponseEntity<?> getCourses() {
 		Map<String, Object> response = new HashMap<>();
 		List<CourseRest> coursesRest = new ArrayList<>();
 		try {

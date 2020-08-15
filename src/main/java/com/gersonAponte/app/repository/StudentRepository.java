@@ -19,6 +19,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	@Query("select e from Student e where e.rut=?1")
 	Optional<Student> findByRut(String rutStudent);
 
-	@Query("select e from Student e where e.rut=?1 and e.course=?2")
-	Optional<Student> findByRutAndCourse(String rutStudent, Course course);
 }

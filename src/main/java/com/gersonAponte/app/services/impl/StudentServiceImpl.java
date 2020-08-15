@@ -3,28 +3,20 @@ package com.gersonAponte.app.services.impl;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gersonAponte.app.config.AppConstans;
-import com.gersonAponte.app.domain.Course;
 import com.gersonAponte.app.domain.Student;
-import com.gersonAponte.app.exceptions.CourseException;
 import com.gersonAponte.app.exceptions.GlobalAppException;
 import com.gersonAponte.app.exceptions.InternalServerErrorException;
 import com.gersonAponte.app.exceptions.NotFoundException;
 import com.gersonAponte.app.exceptions.StudentException;
-import com.gersonAponte.app.jsons.CourseRest;
 import com.gersonAponte.app.jsons.StudentsRest;
-import com.gersonAponte.app.repository.CourseRepository;
 import com.gersonAponte.app.repository.StudentRepository;
-import com.gersonAponte.app.services.CourseService;
 import com.gersonAponte.app.services.StudentService;
 import com.gersonAponte.app.utils.UtilsApp;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -36,14 +28,13 @@ public class StudentServiceImpl implements StudentService {
 	private final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
 
 	private final StudentRepository studentRepository;
-	private final CourseServiceImpl courseService;
+	private final String STUDENT_DELETED = "STUDENT_DELETED";
 
 	public static final ModelMapper modelMapper = new ModelMapper();
 
 	// Constructor
-	public StudentServiceImpl(StudentRepository studentRepository, CourseServiceImpl courseService) {
+	public StudentServiceImpl(StudentRepository studentRepository) {
 		this.studentRepository = studentRepository;
-		this.courseService = courseService;
 	}
 
 	// Fin a Student
@@ -59,29 +50,36 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	// Save a course
-	@Override
 	public StudentsRest createStudent(StudentsRest studentRest) throws GlobalAppException {
-		Student studenValidated = validateNewStudent(studentRest);
+		Student studenValidated = validateStudent(studentRest);
+		studentExistByRut(studenValidated.getRut());
 		Student newStudent = studentRepository.save(studenValidated);
 		return modelMapper.map(newStudent, StudentsRest.class);
 	}
 
-	@Override
 	public String deleteStudent(Long idStudent) throws GlobalAppException {
-		// TODO Auto-generated method stub
-		return null;
+		Student student = getStudentEntity(idStudent);
+		try {
+			studentRepository.deleteById(student.getId());
+		} catch (final Exception e) {
+			log.error(AppConstans.INTERNAL_SERVER_ERROR, e);
+			throw new InternalServerErrorException(AppConstans.ERROR_500, AppConstans.INTERNAL_SERVER_ERROR);
+		}
+		return STUDENT_DELETED;
 	}
 
-	@Override
 	public StudentsRest editStudent(StudentsRest studentRest) throws GlobalAppException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Page<StudentsRest> findStudentPage(Pageable pageable) throws GlobalAppException {
-		// TODO Auto-generated method stub
-		return null;
+		getStudentEntity(studentRest.getId());
+		Student studenValidated = validateStudent(studentRest);
+		studenValidated.setId(studentRest.getId());
+		Student newStudent = null;
+		try {
+			newStudent = studentRepository.save(studenValidated);
+		} catch (final Exception e) {
+			log.error(AppConstans.INTERNAL_SERVER_ERROR, e);
+			throw new InternalServerErrorException(AppConstans.ERROR_500, AppConstans.INTERNAL_SERVER_ERROR);
+		}
+		return modelMapper.map(newStudent, StudentsRest.class);
 	}
 
 	/// Private Class
@@ -89,20 +87,20 @@ public class StudentServiceImpl implements StudentService {
 	// find and cast a student
 	private Student getStudentEntity(Long idStudent) throws GlobalAppException {
 		return studentRepository.findById(idStudent)
-				.orElseThrow(() -> new NotFoundException(AppConstans.ERROR_404, AppConstans.COURSE_NOT_FOUND));
+				.orElseThrow(() -> new NotFoundException(AppConstans.ERROR_404, AppConstans.STUDENT_NOT_FOUND));
 	}
 
 	// Validate for a student does in a course
 	private boolean studentExistByRut(String rutStudent) throws GlobalAppException {
 		Student student = studentRepository.findByRut(rutStudent).orElse(null);
 		if (student != null) {
-			throw new StudentException(AppConstans.ERROR_400, AppConstans.COURSE_ALL_READY_EXIST_WITH_THIS_CODE);
+			throw new StudentException(AppConstans.ERROR_400, AppConstans.STUDENT_ALL_READY_EXIST_WITH_THIS_RUT);
 		}
 		return false;
 	}
 
 	// Validate and Cast a new Student
-	private Student validateNewStudent(StudentsRest student) throws GlobalAppException {
+	private Student validateStudent(StudentsRest student) throws GlobalAppException {
 		String rut = validateNotNullAndLenght(AppConstans.STUDENT_RUT, student.getRut(), AppConstans.MIN_LENGHT_RUT,
 				AppConstans.MAX_LENGHT_RUT);
 		String name = validateNotNullAndLenght(AppConstans.STUDENT_NAME, student.getName(), AppConstans.MIN_LENGHT_NAME,
@@ -114,29 +112,19 @@ public class StudentServiceImpl implements StudentService {
 			age = student.getAge();
 			validateMinMaxLenght(AppConstans.STUDENT_AGE, age.toString(), AppConstans.MIN_LENGHT_AGE,
 					AppConstans.MAX_LENGHT_AGE);
-			if (age < 18) {
-				throw new StudentException(AppConstans.ERROR_400, AppConstans.STUDENT_AGE + "_MUST_BE_>_18");
-			}
+
 		} catch (Exception e) {
 			throw new StudentException(AppConstans.ERROR_400, " FORMAT_ERROR_" + AppConstans.STUDENT_AGE);
 		}
-		Course course = validateCourseNotNullAndExist(student.getCourse());
-
+		if (age < 18) {
+			throw new StudentException(AppConstans.ERROR_400, AppConstans.STUDENT_AGE + "_MUST_BE_>_18");
+		}
 		Student studentOut = new Student();
 		studentOut.setAge(age);
 		studentOut.rut(UtilsApp.validarRut(rut));
 		studentOut.name(name);
 		studentOut.lastname(lastName);
-		studentOut.setCourse(course);
 		return studentOut;
-	}
-
-	// Validate a Course is Not null and exist
-	private Course validateCourseNotNullAndExist(CourseRest course) throws GlobalAppException {
-		if (course == null) {
-			throw new CourseException(AppConstans.ERROR_400, "COURSE_REQUIRED");
-		}
-		return courseService.getCourseEntity(course.getId());
 	}
 
 	// validate not null & min_max lenght of value
@@ -152,10 +140,10 @@ public class StudentServiceImpl implements StudentService {
 	private String validateMinMaxLenght(String nameVar, String valueVar, int minLenght, int maxLength)
 			throws GlobalAppException {
 		if (valueVar.length() < minLenght) {
-			throw new StudentException(AppConstans.ERROR_400, nameVar + "_Must_Be_" + minLenght);
+			throw new StudentException(AppConstans.ERROR_400, nameVar + "_MUST_BE_" + minLenght);
 		}
-		if (valueVar.length() < maxLength) {
-			throw new StudentException(AppConstans.ERROR_400, nameVar + "_Must_Be_" + maxLength);
+		if (valueVar.length() > maxLength) {
+			throw new StudentException(AppConstans.ERROR_400, nameVar + "_MUST_BE_" + maxLength);
 		}
 		return valueVar;
 	}
