@@ -1,42 +1,25 @@
 package com.gersonAponte.app.services;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 import com.gersonAponte.app.domain.Student;
+import com.gersonAponte.app.exceptions.GlobalAppException;
+import com.gersonAponte.app.jsons.StudentsRest;
 
-/**
- * Service Interface for managing {@link Student}.
- */
+@Service
 public interface StudentService {
 
 	/**
-	 * Save a student.
-	 *
-	 * @param student the entity to save.
-	 * @return the persisted entity.
+	 * @param studentId
+	 * @return Student find by id
+	 * @throws GlobalAppException
 	 */
-	Student save(Student student);
+	StudentsRest getStudent(Long studentId) throws GlobalAppException;
 
 	/**
-	 * Get all the students.
-	 *
-	 * @return the list of entities.
+	 * @param studentRest
+	 * @return String Course Created
+	 * @throws GlobalAppException
 	 */
-	List<Student> findAll();
-
-	/**
-	 * Get the "id" student.
-	 *
-	 * @param id the id of the entity.
-	 * @return the entity.
-	 */
-	Optional<Student> findOne(Long id);
-
-	/**
-	 * Delete the "id" student.
-	 *
-	 * @param id the id of the entity.
-	 */
-	void delete(Long id);
+	Student createStudent(StudentsRest studentRest) throws GlobalAppException;
 }

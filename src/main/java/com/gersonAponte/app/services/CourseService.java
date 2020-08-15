@@ -1,52 +1,46 @@
 package com.gersonAponte.app.services;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-import com.gersonAponte.app.domain.Course;
+import com.gersonAponte.app.exceptions.GlobalAppException;
+import com.gersonAponte.app.jsons.CourseRest;
 
-/**
- * Service Interface for managing {@link Course}.
- */
+@Service
 public interface CourseService {
 
-    /**
-     * Save a course.
-     *
-     * @param course the entity to save.
-     * @return the persisted entity.
-     */
-    Course save(Course course);
+	/**
+	 * @param courseId
+	 * @return A Course find by id
+	 * @throws GlobalAppException
+	 */
+	public CourseRest getCourseById(Long courseId) throws GlobalAppException;
 
-    /**
-     * Get all the courses.
-     *
-     * @return the list of entities.
-     */
-    List<Course> findAll();
+	/**
+	 * @return all Courses in BD
+	 * @throws GlobalAppException
+	 */
+	public List<CourseRest> getCourses() throws GlobalAppException;
 
-
-    /**
-     * Get the "id" course.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
-    Optional<Course> findOne(Long id);
-
-    /**
-     * Delete the "id" course.
-     *
-     * @param id the id of the entity.
-     */
-    void delete(Long id);
-    
-    /**
-     * @param pageable
-     * @return Page all Courses, paged by 5
-     */
-    Page<Course> findAllCoursesPage(Pageable pageable);
+	/**
+	 * @param courseRest
+	 * @return String: Course created
+	 * @throws GlobalAppException
+	 */
+	public CourseRest createCourse(CourseRest courseRest) throws GlobalAppException;
+	
+	/**
+	 * @param id of Course
+	 * @return 
+	 * @throws GlobalAppException
+	 */
+	public String  deleteCourse(Long id)throws GlobalAppException;
+	
+	/**
+	 * @param courseRest
+	 * @return a edit course
+	 * @throws GlobalAppException
+	 */
+	public CourseRest editCourse(CourseRest courseRest) throws GlobalAppException;
 }
