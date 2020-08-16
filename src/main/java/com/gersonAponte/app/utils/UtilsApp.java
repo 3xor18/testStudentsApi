@@ -7,6 +7,11 @@ import com.gersonAponte.app.exceptions.StudentException;
 
 public class UtilsApp {
 
+	private final String DV_CERO = "0";
+	private final String DV_K = "K";
+	private final int DV_WAITED_10 = 10;
+	private final int DV_WAITED_11 = 11;
+
 	public UtilsApp() {
 	}
 
@@ -23,60 +28,60 @@ public class UtilsApp {
 		}
 	}
 
-	public static String validarRut(String rutIn) throws GlobalAppException {
-		String rutFormateado;
-		String valor = rutIn.replace(".", "");
-		valor = valor.replace("-", "");
-		valor = valor.replace(",", "");
-		valor = valor.replace(" ", "");
+	public String validadRut(String rutIn) throws GlobalAppException {
+		String formatedRut;
+		String value = rutIn.replace(".", "");
+		value = value.replace("-", "");
+		value = value.replace(",", "");
+		value = value.replace(" ", "");
 
-		int cantidad = valor.length();
-		String cuerpo = valor.substring(0, cantidad - 1);
-		String dv = valor.substring(cantidad - 1, cantidad);
+		int legthRut = value.length();
+		String bodyRut = value.substring(0, legthRut - 1);
+		String dv = value.substring(legthRut - 1, legthRut);
 		dv = dv.toUpperCase();
-		rutIn = cuerpo + "-" + dv;
+		rutIn = bodyRut + "-" + dv;
 
-		if (cuerpo.length() < 7) {
-			throw new StudentException(AppConstans.ERROR_400, "INVALID_RUT");
+		if (bodyRut.length() < AppConstans.MIN_LENGTH_RUT) {
+			throw new StudentException(AppConstans.ERROR_400, "INVALID_LENGTH_RUT");
 		}
 
-		int suma = 0;
-		int multiplo = 2;
-		for (int i = 1; i <= cuerpo.length(); i++) {
-			int caracter = Integer.parseInt(String.valueOf(valor.charAt(cuerpo.length() - i)));
-			int index = multiplo * caracter;
-			suma = suma + index;
-			if (multiplo < 7) {
-				multiplo = multiplo + 1;
+		int sum = 0;
+		int mult = 2;
+		for (int i = 1; i <= bodyRut.length(); i++) {
+			int characterRut = Integer.parseInt(String.valueOf(value.charAt(bodyRut.length() - i)));
+			int index = mult * characterRut;
+			sum = sum + index;
+			if (mult < 7) {
+				mult = mult + 1;
 			} else {
-				multiplo = 2;
+				mult = 2;
 			}
 		}
 
-		int dvEsperado = suma % 11;
-		dvEsperado = 11 - dvEsperado;
+		int dvWated = sum % 11;
+		dvWated = 11 - dvWated;
 
-		if (dvEsperado == 11) {
-			if (dv.equals("0")) {
-				rutFormateado = cuerpo + "-" + dv;
-				return rutFormateado;
-			} else {
-				throw new StudentException(AppConstans.ERROR_400, "INVALID_RUT");
-			}
-		}
-
-		if (dvEsperado == 10) {
-			if (dv.equals("K")) {
-				rutFormateado = cuerpo + "-" + dv;
-				return rutFormateado;
+		if (dvWated == DV_WAITED_11) {
+			if (dv.equals(DV_CERO)) {
+				formatedRut = bodyRut + "-" + dv;
+				return formatedRut;
 			} else {
 				throw new StudentException(AppConstans.ERROR_400, "INVALID_RUT");
 			}
 		}
 
-		if (dv.equals(String.valueOf(dvEsperado))) {
-			rutFormateado = cuerpo + "-" + dv;
-			return rutFormateado;
+		if (dvWated == DV_WAITED_10) {
+			if (dv.equals(DV_K)) {
+				formatedRut = bodyRut + "-" + dv;
+				return formatedRut;
+			} else {
+				throw new StudentException(AppConstans.ERROR_400, "INVALID_RUT");
+			}
+		}
+
+		if (dv.equals(String.valueOf(dvWated))) {
+			formatedRut = bodyRut + "-" + dv;
+			return formatedRut;
 		} else {
 			throw new StudentException(AppConstans.ERROR_400, "INVALID_RUT");
 		}

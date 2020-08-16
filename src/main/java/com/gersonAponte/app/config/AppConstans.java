@@ -2,6 +2,8 @@ package com.gersonAponte.app.config;
 
 public final class AppConstans {
 
+	public static final int MIN_LENGTH_RUT=7;
+	
 	// Courses
 	public static final int MAX_LENG_NAME = 250;
 	public static final int MAX_LENG_CODE = 4;

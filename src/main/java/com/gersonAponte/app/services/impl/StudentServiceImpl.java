@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class StudentServiceImpl implements StudentService {
 
+	UtilsApp utils=new UtilsApp();
 	private final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
 
 	private final StudentRepository studentRepository;
@@ -121,7 +122,7 @@ public class StudentServiceImpl implements StudentService {
 		}
 		Student studentOut = new Student();
 		studentOut.setAge(age);
-		studentOut.rut(UtilsApp.validarRut(rut));
+		studentOut.rut(utils.validadRut(rut));
 		studentOut.name(name);
 		studentOut.lastname(lastName);
 		return studentOut;
