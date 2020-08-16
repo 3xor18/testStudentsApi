@@ -2,13 +2,9 @@ package com.gersonAponte.app.services;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.gersonAponte.app.domain.Student;
 import com.gersonAponte.app.exceptions.GlobalAppException;
-import com.gersonAponte.app.jsons.CourseRest;
 import com.gersonAponte.app.jsons.StudentsRest;
 
 @Service

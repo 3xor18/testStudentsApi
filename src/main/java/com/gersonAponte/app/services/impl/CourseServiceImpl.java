@@ -123,7 +123,7 @@ public class CourseServiceImpl implements CourseService {
 	 * @return a course without id
 	 * @throws GlobalAppException
 	 */
-	private Course validationNewCourse(CourseRest courseIn) throws GlobalAppException {
+	public Course validationNewCourse(CourseRest courseIn) throws GlobalAppException {
 		String code = UtilsApp.validationNotNullAndMaxLengt(courseIn.getCode(), AppConstans.COURSE_CODE,
 				AppConstans.MAX_LENG_CODE);
 		String name = UtilsApp.validationNotNullAndMaxLengt(courseIn.getName(), AppConstans.COURSE_NAME,
@@ -139,7 +139,7 @@ public class CourseServiceImpl implements CourseService {
 	 * @return Check a course exist in DB
 	 * @throws GlobalAppException
 	 */
-	private Course courseExist(Long idCourse) throws GlobalAppException {
+	public Course courseExist(Long idCourse) throws GlobalAppException {
 		return courseRepository.findById(idCourse)
 				.orElseThrow(() -> new NotFoundException(AppConstans.ERROR_404, AppConstans.COURSE_NOT_FOUND));
 	}
@@ -147,7 +147,6 @@ public class CourseServiceImpl implements CourseService {
 	/**
 	 * Return Page of courses
 	 */
-	@Override
 	public Page<CourseRest> findCoursePage(Pageable pageable) throws GlobalAppException {
 		final Page<Course> courses = courseRepository.findAll(pageable);
 		List<CourseRest> coursesList = courses.stream().map(service -> modelMapper.map(service, CourseRest.class))

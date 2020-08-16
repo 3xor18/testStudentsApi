@@ -30,6 +30,15 @@ public final class AppConstans {
 	public static final String STUDENT_ALL_READY_EXIST_WITH_THIS_RUT = "STUDENT_ALL_READY_EXIST_WITH_THIS_RUT";
 	public static final String STUDENT_NOT_FOUND = "STUDENT_NOT_FOUND";
 
+	// Student In Course
+	public static final String NOT_FOUND = "NOT_FOUND";
+	public static final String COURSE_ALL_READY_EXIST = "COURSE_ALL_READY_EXIST";
+	public static final String STUDENT_ALL_READY_EXIST = "STUDENT_ALL_READY_EXIST";
+	public static final String COURSE_REQUIRED = "COURSE_REQUIRED";
+	public static final String STUDENT_REQUIRED = "STUDENT_REQUIRED";
+	public static final String DELETE_SUCCES="DELETE_SUCCES";
+	
+
 	// Status
 	public static final String ERROR_400 = "400";
 	public static final String ERROR_404 = "404";

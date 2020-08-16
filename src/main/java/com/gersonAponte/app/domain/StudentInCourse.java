@@ -1,21 +1,23 @@
 package com.gersonAponte.app.domain;
 
+import java.io.Serializable;
 
 import javax.persistence.*;
 
-
 @Entity
 @Table(name = "student_in_course")
-public class StudentInCourse {
+public class StudentInCourse implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name="course_id")
 	private Course course;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name="student_id")
 	private Student student;
 
 	// jhipster-needle-entity-add-field - JHipster will add fields here, do not

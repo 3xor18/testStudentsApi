@@ -85,13 +85,13 @@ public class StudentServiceImpl implements StudentService {
 	/// Private Class
 
 	// find and cast a student
-	private Student getStudentEntity(Long idStudent) throws GlobalAppException {
+	public Student getStudentEntity(Long idStudent) throws GlobalAppException {
 		return studentRepository.findById(idStudent)
 				.orElseThrow(() -> new NotFoundException(AppConstans.ERROR_404, AppConstans.STUDENT_NOT_FOUND));
 	}
 
 	// Validate for a student does in a course
-	private boolean studentExistByRut(String rutStudent) throws GlobalAppException {
+	public boolean studentExistByRut(String rutStudent) throws GlobalAppException {
 		Student student = studentRepository.findByRut(rutStudent).orElse(null);
 		if (student != null) {
 			throw new StudentException(AppConstans.ERROR_400, AppConstans.STUDENT_ALL_READY_EXIST_WITH_THIS_RUT);
@@ -100,7 +100,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	// Validate and Cast a new Student
-	private Student validateStudent(StudentsRest student) throws GlobalAppException {
+	public Student validateStudent(StudentsRest student) throws GlobalAppException {
 		String rut = validateNotNullAndLenght(AppConstans.STUDENT_RUT, student.getRut(), AppConstans.MIN_LENGHT_RUT,
 				AppConstans.MAX_LENGHT_RUT);
 		String name = validateNotNullAndLenght(AppConstans.STUDENT_NAME, student.getName(), AppConstans.MIN_LENGHT_NAME,
