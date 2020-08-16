@@ -35,7 +35,7 @@ import com.gersonAponte.app.services.CourseService;
  * REST controller for managing {@link com.gerson.app.domain.Course}.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:9090")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api" + "/v1")
 public class CourseController {
 	private final Logger log = LoggerFactory.getLogger(CourseController.class);

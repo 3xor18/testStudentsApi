@@ -26,7 +26,7 @@ import com.gersonAponte.app.jsons.StudentInCourseRest;
 import com.gersonAponte.app.services.StudentInCourseService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:9090")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api" + "/v1")
 public class StudentInCourseController {
 

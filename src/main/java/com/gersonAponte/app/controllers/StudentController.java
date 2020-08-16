@@ -23,7 +23,7 @@ import java.util.Map;
  * REST controller for managing {@link com.gerson.app.domain.Student}.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:9090")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api" + "/v1")
 public class StudentController {
 	private final Logger log = LoggerFactory.getLogger(StudentController.class);

@@ -16,9 +16,14 @@ public class authController {
 	@Autowired
 	private JwtUtil jwtTokenUtil;
 
+	//Using Implicid Auth (user and password no requerid in the header) Hardcode empty in this method
 	@RequestMapping(value = "/authenticate", method = RequestMethod.GET)
 	public ResponseEntity<?> createAuthToken() throws Exception {
+		//without checking if the credentials are correct
+		
+		//Making a own AuthRequest
 		AuthenticationRequest autenthicationRequestNew = new AuthenticationRequest();
+		//set empty for inject this to new token
 		autenthicationRequestNew.setUsername("");
 		autenthicationRequestNew.setPassword("");
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(autenthicationRequestNew.getUsername());
