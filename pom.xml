@@ -12,6 +12,7 @@
 	<groupId>com.gersonAponte.app</groupId>
 	<artifactId>gersonTest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>gersonTest</name>
 	<description>Proyect for 23People</description>
 
