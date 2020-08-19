@@ -54,7 +54,7 @@ public class CourseController {
 	 * @return a Course found By Id
 	 * @throws GlobalAppException
 	 */
-	@RequestMapping(value = "course/{courseId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "courses/{courseId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getCourseById(@PathVariable Long courseId) {
 		CourseRest courseResponse = null;
 		Map<String, Object> response = new HashMap<>();

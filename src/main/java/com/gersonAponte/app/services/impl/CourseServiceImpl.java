@@ -47,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
 	 */
 	public List<CourseRest> getCourses() throws GlobalAppException {
 		final List<Course> courseEntity = courseRepository.findAll();
-		return courseEntity.stream().map(service -> modelMapper.map(service, CourseRest.class))
+		return courseEntity.stream().map(course -> modelMapper.map(course, CourseRest.class))
 				.collect(Collectors.toList());
 	}
 
