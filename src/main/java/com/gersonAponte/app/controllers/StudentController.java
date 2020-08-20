@@ -3,7 +3,6 @@ package com.gersonAponte.app.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +37,7 @@ public class StudentController {
 	 * @param studentId
 	 * @return A Student
 	 */
-	@RequestMapping(value = "student/{studentId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("students/{studentId}")
 	public ResponseEntity<?> getStudentById(@PathVariable Long studentId) {
 		StudentsRest studentRest = null;
 		Map<String, Object> response = new HashMap<>();
@@ -67,7 +66,7 @@ public class StudentController {
 	/**
 	 * @return all Students by list
 	 */
-	@RequestMapping(value = "students", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("students")
 	public ResponseEntity<?> getStudents() {
 		Map<String, Object> response = new HashMap<>();
 		List<StudentsRest> studentsRest = new ArrayList<>();
@@ -95,7 +94,7 @@ public class StudentController {
 	 * @param studentRest
 	 * @return a New Srudent
 	 */
-	@RequestMapping(value = "student", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("students")
 	public ResponseEntity<?> createStudent(@RequestBody StudentsRest studentRest) {
 		Map<String, Object> response = new HashMap<>();
 		StudentsRest studentNew;
@@ -124,7 +123,7 @@ public class StudentController {
 	 * @param id
 	 * @return String Success
 	 */
-	@RequestMapping(value = "student", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping("students")
 	public ResponseEntity<?> deleteStudent(@RequestParam Long id) {
 		Map<String, Object> response = new HashMap<>();
 		String message = null;
@@ -158,7 +157,7 @@ public class StudentController {
 	 * @param studentRest
 	 * @return a Student Edited
 	 */
-	@RequestMapping(value = "student", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("students")
 	public ResponseEntity<?> editStudent(@RequestBody StudentsRest studentRest) {
 		Map<String, Object> response = new HashMap<>();
 		StudentsRest newStudent = null;

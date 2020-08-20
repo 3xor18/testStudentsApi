@@ -8,13 +8,15 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +40,7 @@ public class StudentInCourseController {
 		this.service = service;
 	}
 
-	@RequestMapping(value = "studentincourse/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping( "studentincourse/{id}")
 	public ResponseEntity<?> getById(@PathVariable Long id) {
 		StudentInCourseRest entityRest;
 		Map<String, Object> response = new HashMap<>();
@@ -74,7 +76,7 @@ public class StudentInCourseController {
 		return new ResponseEntity<StudentInCourseRest>(entityRest, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "studentincourse", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping( "studentincourse")
 	public ResponseEntity<?> getAll() {
 		Map<String, Object> response = new HashMap<>();
 		List<StudentInCourseRest> entityRest = new ArrayList<>();
@@ -109,7 +111,7 @@ public class StudentInCourseController {
 		return new ResponseEntity<List<StudentInCourseRest>>(entityRest, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "studentincourse", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("studentincourse")
 	public ResponseEntity<?> create(@RequestBody StudentInCourseRest entityRest) {
 		Map<String, Object> response = new HashMap<>();
 		StudentInCourseRest entityNew;
@@ -144,7 +146,7 @@ public class StudentInCourseController {
 		return new ResponseEntity<StudentInCourseRest>(entityNew, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "studentincourse", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping("studentincourse")
 	public ResponseEntity<?> delete(@RequestParam Long id) {
 		Map<String, Object> response = new HashMap<>();
 		String message = null;
@@ -179,7 +181,7 @@ public class StudentInCourseController {
 		return new ResponseEntity<String>(message, HttpStatus.NO_CONTENT);
 	}
 
-	@RequestMapping(value = "studentincourse", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("studentincourse")
 	public ResponseEntity<?> editStudent(@RequestBody StudentInCourseRest entityRest) {
 		Map<String, Object> response = new HashMap<>();
 		StudentInCourseRest newEntity = null;

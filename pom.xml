@@ -97,6 +97,14 @@
 			<version>0.9.1</version>
 		</dependency>
 		<!-- Security -->
+		
+		<!-- GoogleCloud -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
+			<version>1.2.3.RELEASE</version>
+		</dependency>
+		<!-- Googlecloud -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>

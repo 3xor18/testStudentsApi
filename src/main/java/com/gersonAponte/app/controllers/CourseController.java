@@ -13,13 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,7 +56,7 @@ public class CourseController {
 	 * @return a Course found By Id
 	 * @throws GlobalAppException
 	 */
-	@RequestMapping(value = "courses/{courseId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("courses/{courseId}")
 	public ResponseEntity<?> getCourseById(@PathVariable Long courseId) {
 		CourseRest courseResponse = null;
 		Map<String, Object> response = new HashMap<>();
@@ -79,7 +81,7 @@ public class CourseController {
 	 * @return all Courses in DB
 	 * @throws GlobalAppException
 	 */
-	@RequestMapping(value = "courses", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("courses")
 	public ResponseEntity<?> getCourses() {
 		Map<String, Object> response = new HashMap<>();
 		List<CourseRest> coursesRest = new ArrayList<>();
@@ -103,7 +105,7 @@ public class CourseController {
 	 * @return String COURSE_CREATED
 	 * @throws GlobalAppException
 	 */
-	@RequestMapping(value = "course", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("courses")
 	public ResponseEntity<?> createCourse(@RequestBody CourseRest courseRest) {
 		Map<String, Object> response = new HashMap<>();
 		CourseRest newCourse;
@@ -133,7 +135,7 @@ public class CourseController {
 	 * @return String COURSE_DELETAED
 	 * @throws GlobalAppException
 	 */
-	@RequestMapping(value = "course", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping("courses")
 	public ResponseEntity<?> deleteCourse(@RequestParam Long id) {
 		Map<String, Object> response = new HashMap<>();
 		String message = null;
@@ -162,7 +164,7 @@ public class CourseController {
 	 * @param courseRest
 	 * @return A Edit course
 	 */
-	@RequestMapping(value = "course", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("courses")
 	public ResponseEntity<?> editCourse(@RequestBody CourseRest courseRest) {
 		Map<String, Object> response = new HashMap<>();
 		CourseRest newCourse = null;
@@ -191,7 +193,7 @@ public class CourseController {
 	 * @param page
 	 * @return Page of Courses
 	 */
-	@RequestMapping(value = "courses/page/{page}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("courses/page/{page}")
 	public ResponseEntity<?> getCoursePage(@PathVariable Integer page) {
 		Map<String, Object> response = new HashMap<>();
 		Pageable pageable = PageRequest.of(page, AppConstans.PAGINADOBY);
